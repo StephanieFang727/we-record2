@@ -1,19 +1,31 @@
 // pages/calendar/calendar.js
-import {formatMonth} from "../../utils/util"
-Page({
+import create from '../../utils/create'
+import store from '../../store/index'
+import { formatMonth } from '../../utils/util'
 
+create.Page(store, {
+  use:[
+    'year',
+    'month'
+  ],
   /**
    * 页面的初始数据
    */
-  data: {
-    curMonth: "2021-01",
-    year: 2021,
-    month: 1,
+  // data: {
+  //   curMonth: "2021-01",
+  //   year: 2021,
+  //   month: 1,
+  // },
+  computed: {
+    curMonth() {
+      return formatMonth(this.year, this.month);
+    }
   },
  // 月份选择处理
   bindMonthChange: function(e){
     const {type} = e.currentTarget.dataset;
     let { year, month } = this.data;
+    console.log(year,month);
     if (type === 'back') {
       if( month === 1 ){
         year --;
@@ -30,17 +42,15 @@ Page({
         month ++;
       }
     }
-    this.setData({
-      year,
-      month,
-      curMonth: formatMonth(year, month) 
-    })
+    this.store.data.year = year;
+    this.store.data.month = month;
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.store.data.year = new Date().getFullYear();
+    this.store.data.month = new Date().getMonth() + 1;
   },
 
   /**

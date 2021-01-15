@@ -7,7 +7,7 @@
       <view class="cal_left_arrow" bindtap="bindMonthChange" data-type="forward">》</view>
     </view>
     <view class='cal_content'>
-      <CalendarTable year="{{year}}" month="{{month}}"></CalendarTable>
+      <CalendarTable></CalendarTable>
     </view>
   </view>
 </view>

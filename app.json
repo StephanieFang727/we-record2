@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/todos/todos",
-    "pages/calendar/calendar"
+    "pages/calendar/calendar",
+    "pages/userInfo/userinfo"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -27,6 +28,10 @@
       {
         "pagePath": "pages/calendar/calendar",
         "text": "日历"
+      },
+      {
+        "pagePath": "pages/userInfo/userinfo",
+        "text": "我"
       }
     ]
   }

@@ -1,28 +1,33 @@
 // components/calendar/calendarTable.js
+import create from '../../utils/create'
 import { 
   getMonthArr,
   getFirstday,
   getPreMonthArr,
   getNextMonthArr,
 } from "../../utils/util"
-Component({
-  options: {
-    pureDataPattern: /^_/ // 指定所有 _ 开头的数据字段为纯数据字段
-  },
-  /**
-   * 组件的属性列表
-   */
-  properties: {
-    year: {
-      type: Number,
-      value: 0,
-    },
-    month: {
-      type: Number,
-      value: 0,
-    }
-  },
 
+create.Component({
+  // options: {
+  //   pureDataPattern: /^_/ // 指定所有 _ 开头的数据字段为纯数据字段
+  // },
+  // /**
+  //  * 组件的属性列表
+  //  */
+  // properties: {
+  //   year: {
+  //     type: Number,
+  //     value: 0,
+  //   },
+  //   month: {
+  //     type: Number,
+  //     value: 0,
+  //   }
+  // },
+  use:[
+    'year',
+    'month'
+  ],
   /**
    * 组件的初始数据
    */
@@ -44,7 +49,9 @@ Component({
   },
   observers: {
     'year, month': function(year, month) {
-      this.updateCalendarArr();      
+      this.updateCalendarArr();  // 更新日历
+      // 拉取对应月份的事件
+      
     }
   },
   /**
