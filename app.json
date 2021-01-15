@@ -1,14 +1,33 @@
 {
   "pages": [
-		"pages/index/index",
-		"pages/index-with-data/index",
-    "pages/logs/logs"
+    "pages/todos/todos",
+    "pages/calendar/calendar"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "Weixin",
     "navigationBarTextStyle": "black"
   },
-  "sitemapLocation": "sitemap.json"
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "useExtendedLib":{
+    "weui": true
+  },
+  "tabBar": {
+    "color": "#C8A9D3",
+    "selectedColor": "#C077AF",
+    "borderStyle": "black",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/todos/todos",
+        "text": "任务"
+      },
+      {
+        "pagePath": "pages/calendar/calendar",
+        "text": "日历"
+      }
+    ]
+  }
 }

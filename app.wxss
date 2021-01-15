@@ -1,10 +1,92 @@
 /**app.wxss**/
+view {
+ box-sizing: border-box;
+}
+.page {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  
+  /* background-color: rgb(58,175,169,0.6); */
+  /* background-color: #3AAFA9; */
+  background-color: #f7f7f7;
+  /* color: #2C3E50; */
+  /* color: #22B6ED */
+  color: #1A2A3A;
+}
 .container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
-  box-sizing: border-box;
+  min-height: 100vh;
+  /* background-color: #DEF2F1; */
+  padding: 30rpx 0;
 } 
+.btn {
+  background-color: #C077AF !important ;
+  /* width: rpx !important; */
+}
+.btn.cancel_btn {
+  background-color: #eee !important;
+  color: #34494E !important;
+}
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1610431157048'); /* IE9 */
+  src: url('iconfont.eot?t=1610431157048#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,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') format('woff2'),
+  url('iconfont.woff?t=1610431157048') format('woff'),
+  url('iconfont.ttf?t=1610431157048') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1610431157048#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 26px;
+  font-style: normal;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-weixuan1:before {
+  content: "\e600";
+  color: #2C3E50;
+}
+
+.icon-weixuan2:before {
+  content: "\e782";
+}
+
+.icon-yixuan1:before {
+  content: "\e63d";
+  color: #2C3E50;
+}
+
+.icon-yixuan2:before {
+  content: "\e60f";
+}
+
+.icon-gengduo:before {
+  content: "\e8af";
+}
+
+.icon-shanchu:before {
+  content: "\e8b6";
+}
+
+.icon-zengjia:before {
+  content: "\e8c8";
+}
+
+.icon-shoucang:before {
+  content: "\e8b9";
+}
+
+.icon-shoucang1:before {
+  content: "\e8c6";
+}
+
+.icon-bianji:before {
+  content: "\e8ac";
+}
+
+
+
+

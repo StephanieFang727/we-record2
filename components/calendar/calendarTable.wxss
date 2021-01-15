@@ -1,0 +1,36 @@
+/* components/calendar/calendarTable.wxss */
+.table {
+  border-top :1px solid #dadada;
+  /* border-right: 0;
+  border-bottom: 0; */
+  width: 100%;
+}
+.thead {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.tbody {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+}
+.td {
+  width: 14.2857%;
+  text-align: center;
+}
+.th,.td {
+  padding: 6px;
+  /* border-bottom: 1px solid #dadada;
+  border-right: 1px solid #dadada; */
+  text-align: center;
+  /* width:100% */
+}
+.th {
+  font-weight: 400;
+  /* background-color: #dadada */
+}
+.tbody .cal_pre,.cal_next {
+  color: #ccc;
+}

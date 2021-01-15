@@ -1,0 +1,16 @@
+/* pages/calendar/calendar.wxss */
+.cal_header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 48rpx;
+}
+.cal_header .cal_title {
+  width: 300rpx;
+  text-align: center;
+  border: 1rpx solid black;
+  font-weight: 1000;
+  font-size: large;
+}
+.cal_content {
+  padding: 0 16rpx;
+}

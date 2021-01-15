@@ -1,0 +1,17 @@
+<!--components/calendar/calendarTable.wxml-->
+<view class="table">
+  <view class="thead">
+    <view class="th" wx:for="{{weekArr}}" wx:key="index">{{item}}</view>
+  </view>
+  <view class='tbody'>
+    <view class="td cal_pre" wx:for="{{preArr}}" wx:key="index">
+      {{item.date}}
+    </view>
+    <view class="td cal_cur" wx:for="{{curMonthArr}}" wx:key="index">
+      {{item.date}}
+    </view>
+    <view class="td cal_next" wx:for="{{nextArr}}" wx:key="index">
+      {{item.date}}
+    </view>
+  </view>
+</view>  

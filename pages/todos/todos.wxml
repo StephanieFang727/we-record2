@@ -1,0 +1,94 @@
+<!--pages/todos.wxml-->
+<view class="page">
+ <view class="container">
+  <view class="todo_date">
+    <picker mode="date" value="{{date}}" start="2015-09-01" end="2025-09-01" bindchange="bindDateChange">
+    <view class="picker">
+    {{date}}
+    </view>
+  </picker>
+  </view>
+  <view class="todo_title">
+    <view class="status">
+      <text class="{{status === '1'?'active':''}}" data-status="1" bindtap="switchStatus">全部</text>
+      <text class="{{status === '2'?'active':''}}" data-status="2" bindtap="switchStatus">未完成</text>
+      <text class="{{status === '3'?'active':''}}" data-status="3" bindtap="switchStatus">已完成</text>
+    </view>
+    <view class='todo_add-icon-box'>
+      <icon class="iconfont icon-zengjia todo_add-icon" bindtap="bindAddTap"></icon>
+    </view>
+  </view>
+  <view class="todo_list" wx:for="{{curList}}" wx:key="id">
+    <view class="todo_item"
+      bindtouchstart="touchS" 
+      bindtouchmove="touchM" 
+      bindtouchend="touchE"
+      data-id="{{item.id}}"
+      style="{{item.itemStyle}}"
+    >
+      <view class="todo_item-content"
+      bindlongpress="bindTodoTap"
+      data-id="{{item.id}}"
+      style="width: {{todoContentWidth}}px"
+      >
+        <view class='todo_urgent-icon-box' wx:if="{{item.isUrgent}}">
+          <icon class="iconfont icon-shoucang1 todo_urgent-icon"></icon>
+        </view>
+        <icon class="iconfont{{item.completed ? ' icon-yixuan1' :' icon-weixuan1'}}"></icon>
+        <view><text class="item-name">{{item.name}}</text></view>
+      </view>
+      <view class="todo-btn_group">
+        <view class='todo-btn_item todo_edit-btn' catchtap="bindEditTap" data-item="{{item}}">
+          <icon class="iconfont icon-bianji"></icon>
+        </view>
+        <view class='todo-btn_item todo_urgent-btn' catchtap="bindUrgentTap" data-id="{{item.id}}">
+          <icon class="iconfont{{item.isUrgent ? ' icon-shoucang1' : ' icon-shoucang'}}"></icon>
+        </view>
+        <view class='todo-btn_item todo_del-btn' catchtap="bindDelTap" data-id="{{item.id}}">
+          <icon class="iconfont icon-shanchu"></icon>
+        </view>
+      </view>
+    </view> 
+  </view>
+  <view class='todoForm-box' style="display: {{isFormShow ? 'block': 'none'}}">
+    <form class='todoForm' catchsubmit="formSubmit" catchreset="formReset">
+      <view class="weui-cell weui-cell_input">
+        <textarea
+        class="weui-textarea" 
+        placeholder="请输入文本" 
+        style="height: 3.3em" 
+        value="{{selectedItem.name}}"
+        name="name"/>
+          <view class="weui-textarea-counter">0/100</view>
+        </view>
+      <view class="weui-cell">
+        <text>是否紧急</text>
+        <switch
+        class="tocdoForm-switch"
+        checked="{{selectedItem.isUrgent}}"
+        name="isUrgent"
+        color="#FAED26"/>
+      </view>
+      <view class="todoForm-btn_group">
+        <button 
+        class="todoForm-add_btn btn" 
+        type="primary" 
+        size="mini"
+        formType="submit"
+        >
+        确定
+      </button>
+        <button 
+        class="todoForm-cancel_btn btn cancel_btn" 
+        type="default" 
+        bindtap="hideForm" 
+        size="mini"
+        form-type='reset'
+        >
+        取消
+      </button>
+      </view>
+    </form>
+  </view>
+ </view>
+</view>
