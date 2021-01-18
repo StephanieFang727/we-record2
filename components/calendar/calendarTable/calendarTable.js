@@ -1,11 +1,11 @@
 // components/calendar/calendarTable.js
-import create from '../../utils/create'
+import create from '../../../utils/create'
 import { 
   getMonthArr,
   getFirstday,
   getPreMonthArr,
   getNextMonthArr,
-} from "../../utils/util"
+} from "../../../utils/util"
 
 create.Component({
   // options: {
