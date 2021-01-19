@@ -110,7 +110,7 @@ Component({
   bindDelTap(e){
     this.triggerEvent('delTap',{
       value: {
-        id: e.currentTarget.dataset.id
+        item: this.data.item
       }
     })
   }

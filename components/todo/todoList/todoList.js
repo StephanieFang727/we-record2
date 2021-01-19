@@ -1,6 +1,7 @@
 // components/todo/todoList/todoList.js
 import create from '../../../utils/create'
 import {getStorageData, setStorageData, wxp}  from '../../../utils/api';
+import {getIndex} from '../../../utils/util'
 
 create.Component({
   use:[
@@ -19,6 +20,7 @@ create.Component({
     listData: [], // 列表源数据
     curList:[], // 当前展示列表
     calendarData: {}, // 日历源数据
+    todoCount: 0, // 当日待办
     selectedTodoName: '',
     selectedIsUrgent: '',
     selectedItem: '',
@@ -44,24 +46,28 @@ create.Component({
   // 获取todolist源数据
   getListData: async function() {
     const {date} = this.store.data;
-    console.log(date);
     let calendarData = {};
     try {
       calendarData = await getStorageData('todoInDay');
     } catch(e) {
       console.log(e),
-      calendarData = {};
+      calendarData[date] = {};
     }
+    const listData = calendarData[date].listData || [];
+    const todoCount = calendarData[date].todoCount || 0;
     this.setData({
       calendarData,
-      listData: calendarData[date] || [],
+      listData,
+      todoCount,
     })
+    console.log(calendarData);
  },
  // 存储todolist数据
- setListData: async function(listData) {
+ setListData: async function(todoDetail) {
    const {date} = this.store.data;
    let temp = this.data.calendarData;
-   temp[date] = listData;
+   temp[date] = {...temp[date], ...todoDetail};
+   console.log(temp);
    try{
      await setStorageData('todoInDay',temp);
    } catch(e) {
@@ -122,20 +128,25 @@ create.Component({
   // 提交表单函数
   formSubmit: function(e) {
     const {formType, selectedItem: item} = this.data;
+    let {todoCount} = this.data;
     let listData = [];
     let newItem = {};
     if(formType==='add'){
       newItem = {id:new Date().getTime(), completed: false, ...e.detail.value};
       listData = [...this.data.listData,newItem];
+      todoCount ++;
     }else if(formType==='edit'){
       newItem = {id:item.id, completed: item.completed, ...e.detail.value};
       console.log(newItem);
       listData = this.data.listData;
-      const index = util.getIndex(listData,item);
+      const index = getIndex(listData,item);
       let temp = listData.splice(index,1, newItem);
       console.log(temp);
     }
-    this.setListData(listData);
+    this.setListData({
+      listData,
+      todoCount,
+    });
     this.initCurList();
     this.setData({
       isFormShow: false,
@@ -161,10 +172,16 @@ create.Component({
   bindTodoTap: function(e) {
     const { id } = e.detail.value;
     const {curList: list } = this.data;
+    let {todoCount} = this.data;
     let item = list.filter(item=>item.id === id)[0];
-    if(!item.completed){
+    console.log(item.completed);
+    if(!item.completed){ //未完成-->已完成
       item.completed = !item.completed;
-      this.setListData(this.data.listData);
+      todoCount --;
+      this.setListData({
+        listData: this.data.listData,
+        todoCount,
+      });
       this.initCurList();
     } else {
       wxp.showModal({
@@ -172,7 +189,11 @@ create.Component({
         success: (e) => {
           if(e.confirm){
             item.completed = !item.completed;
-            this.setListData(this.data.listData);
+            todoCount ++;
+            this.setListData({
+              listData: this.data.listData,
+              todoCount
+            });
             this.initCurList();
           }
         }
@@ -197,20 +218,28 @@ create.Component({
     this.initCurList();
   },
   bindDelTap: function(e){
-    const { id } = e.detail.value;
+    const { item } = e.detail.value;
     wx.showModal({
       title: '删除提示',
       content: '确定要删除这项任务吗？',
       success: (e) => {
         if (e.confirm) {
-          this.delTodo(id);
+          this.delTodo(item);
         }
       }
     })
   },
-  delTodo: function(id){
-    let listData = this.data.listData.filter(item=>item.id!==id);
-    this.setListData(listData);
+  delTodo: function(item){
+    let {todoCount} = this.data;
+    let listData = this.data.listData.filter(v=>v.id!==item.id);
+    console.log(listData,123);
+    if(!item.completed){// 如果删除的是未完成的事项 则todoCount也要相应减一
+      todoCount --;
+    }
+    this.setListData({
+      listData,
+      todoCount
+    });
     this.initCurList();
   },
   }
