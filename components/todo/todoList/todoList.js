@@ -2,14 +2,17 @@
 import create from '../../../utils/create'
 import {getStorageData, setStorageData, wxp}  from '../../../utils/api';
 
-Component({
-  properties: {
-    // 这里定义了innerText属性，属性值可以在组件使用时指定
-    date: {
-      type: String,
-      value: '',
-   }
-  },
+create.Component({
+  use:[
+    "date",
+  ],
+  // properties: {
+  //   // 这里定义了innerText属性，属性值可以在组件使用时指定
+  //   date: {
+  //     type: String,
+  //     value: '',
+  //  }
+  // },
   data: {
     status: '1',
     isFormShow: false,
@@ -146,7 +149,7 @@ Component({
   },
    // 获取todolist源数据
   getListData: async function() {
-     const {date} = this.data;
+     const {date} = this.store.data;
      console.log(date);
      let calendarData = {};
      try {
@@ -162,7 +165,7 @@ Component({
   },
   // 存储todolist数据
   setListData: async function(listData) {
-    const {date} = this.data;
+    const {date} = this.store.data;
     let temp = this.data.calendarData;
     temp[date] = listData;
     try{

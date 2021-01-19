@@ -4,32 +4,28 @@ import {
   formatMonth
 } from "../../../utils/util"
 
-create.Component({
+Component({
   // options: {
   //   pureDataPattern: /^_/ // 指定所有 _ 开头的数据字段为纯数据字段
   // },
   // /**
   //  * 组件的属性列表
   //  */
-  // properties: {
-  //   year: {
-  //     type: Number,
-  //     value: 0,
-  //   },
-  //   month: {
-  //     type: Number,
-  //     value: 0,
-  //   }
-  // },
-  use:[
-    'year',
-    'month'
-  ],
+  properties: {
+    year: {
+      type: Number,
+      value: 0,
+    },
+    month: {
+      type: Number,
+      value: 0,
+    }
+  },
   /**
    * 组件的初始数据
    */
   data: {
-
+    curMonth: '',
   },
   lifetimes: {
     attached: function() {
@@ -44,9 +40,12 @@ create.Component({
       // 在组件实例被从页面节点树移除时执行
     },
   },
-  computed: {
-    curMonth() {
-      return formatMonth(this.year, this.month);
+  observers: {
+    'year, month': function(year, month) {
+      console.log(year)
+      this.setData({
+        curMonth: formatMonth(year, month)
+      })
     }
   },
   /**
@@ -57,7 +56,6 @@ create.Component({
   bindMonthChange: function(e){
     const {type} = e.currentTarget.dataset;
     let { year, month } = this.data;
-    console.log(year,month);
     if (type === 'back') {
       if( month === 1 ){
         year --;
@@ -74,8 +72,12 @@ create.Component({
         month ++;
       }
     }
-    this.store.data.year = year;
-    this.store.data.month = month;
+    // this.store.data.year = year;
+    // this.store.data.month = month;
+    this.triggerEvent('monthChange',{value:{
+      year,
+      month
+    }})
   },
   }
 })

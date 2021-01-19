@@ -1,7 +1,7 @@
 <!--pages/todos.wxml-->
 <view class="page">
  <view class="container">
-  <TodoHeader date="{{date}}" bind:dateChange="onDateChange"></TodoHeader>
-  <TodoList date="{{date}}"></TodoList>
+  <TodoHeader></TodoHeader>
+  <TodoList></TodoList>
  </view>
 </view>

@@ -1,28 +1,28 @@
 // pages/todos.js
 import create from '../../utils/create'
 import store from '../../store/index'
-import {formatTime} from '../../utils/util';
 
-Page({
- 
+
+create.Page(store, {
+  use:[
+
+  ],
   /**
    * 页面的初始数据
    */
   data:{
     
   },
-  onDateChange(e){
-    this.setData({
-      date: e.detail.value,
-    })
-  },
+  // onDateChange(e){
+  //   this.setData({
+  //     date: e.detail.value,
+  //   })
+  // },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: async function (options) {
-    this.setData({
-      date: formatTime(new Date())
-    }) 
+  onLoad: function (options) {
+   
   },
 
   /**
