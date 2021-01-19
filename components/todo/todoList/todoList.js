@@ -214,7 +214,9 @@ create.Component({
     const {curList: list } = this.data;
     let item = list.filter(item=>item.id === id)[0];
     item.isUrgent = !item.isUrgent;
-    this.setListData(this.data.listData);
+    this.setListData({
+      listData: this.data.listData
+    });
     this.initCurList();
   },
   bindDelTap: function(e){
