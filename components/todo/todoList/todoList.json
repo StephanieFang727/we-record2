@@ -1,5 +1,7 @@
 {
   "component": true,
-  "usingComponents": {},
+  "usingComponents": {
+    "TodoItem": "/components/todo/todoItem/todoItem"
+  },
   "styleIsolation": "apply-shared"
 }

@@ -1,0 +1,31 @@
+<!--components/todo/todoItem/todoItem.wxml-->
+<view class="todo_item"
+      bindtouchstart="touchS" 
+      bindtouchmove="touchM" 
+      bindtouchend="touchE"
+      data-id="{{item.id}}"
+      style="{{item.itemStyle}}"
+    >
+    <view class="todo_item-content"
+    bindlongpress="bindTodoTap"
+    data-id="{{item.id}}"
+    style="width: {{todoContentWidth}}px"
+    >
+      <view class='todo_urgent-icon-box' wx:if="{{item.isUrgent}}">
+        <icon class="iconfont icon-shoucang1 todo_urgent-icon"></icon>
+      </view>
+      <icon class="iconfont{{item.completed ? ' icon-yixuan1' :' icon-weixuan1'}}"></icon>
+      <view class="item-words"><text class="item-name">{{item.name}}</text></view>
+    </view>
+    <view class="todo-btn_group">
+      <view class='todo-btn_item todo_edit-btn' catchtap="bindEditTap" data-item="{{item}}">
+        <icon class="iconfont icon-bianji"></icon>
+      </view>
+      <view class='todo-btn_item todo_urgent-btn' catchtap="bindUrgentTap" data-id="{{item.id}}">
+        <icon class="iconfont{{item.isUrgent ? ' icon-shoucang1' : ' icon-shoucang'}}"></icon>
+      </view>
+      <view class='todo-btn_item todo_del-btn' catchtap="bindDelTap" data-id="{{item.id}}">
+        <icon class="iconfont icon-shanchu"></icon>
+      </view>
+    </view>
+</view>
