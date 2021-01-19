@@ -1,6 +1,6 @@
 <!--components/calendar/calendarHeader.wxml-->
 <view class="cal_header">
   <view class="cal_left_arrow" bindtap="bindMonthChange" data-type="back">《</view>
-  <view class="cal_title">{{curMonth}}</view>   
+  <view class="cal_title">{{month}}</view>   
   <view class="cal_left_arrow" bindtap="bindMonthChange" data-type="forward">》</view>
 </view>

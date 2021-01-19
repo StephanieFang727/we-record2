@@ -3,7 +3,7 @@ import create from '../../utils/create'
 import store from '../../store/index'
 
 
-Page({
+create.Page(store, {
   /**
    * 页面的初始数据
    */
@@ -11,20 +11,11 @@ Page({
     year: '',
     month: '',
   },
-  // computed: {
-  // },
-  onMonthChange(e){
-    console.log(e);
-    
-  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      year: new Date().getFullYear(),
-      month: new Date().getMonth() + 1
-    })
+    
   },
 
   /**

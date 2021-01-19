@@ -25,7 +25,6 @@ create.Component({
   //   }
   // },
   use:[
-    'year',
     'month'
   ],
   /**
@@ -41,14 +40,14 @@ create.Component({
     attached: function() {
       // 在组件实例进入页面节点树时执行
       // 可以执行一些初始化操作
-     this.updateCalendarArr();
+     // this.updateCalendarArr();
     },
     detached: function() {
       // 在组件实例被从页面节点树移除时执行
     },
   },
   observers: {
-    'year, month': function(year, month) {
+    'month': function() {
       this.updateCalendarArr();  // 更新日历
       // 拉取对应月份的事件
       
@@ -59,7 +58,8 @@ create.Component({
    */
   methods: {
     updateCalendarArr: function(){
-      const { preArr, curMonthArr, nextArr} = this.getCalendarArr(this.data.year, this.data.month);
+      const [year, month] = this.store.data.month.split('-').map(item => parseInt(item));
+      const { preArr, curMonthArr, nextArr} = this.getCalendarArr(year, month);
       this.setData({
         preArr,
         curMonthArr,
