@@ -1,7 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-    "TodoItem": "/components/todo/todoItem/todoItem"
+    "TodoItem": "/components/todo/todoItem/todoItem",
+    "TodoForm": "/components/todo/todoForm/todoForm"
   },
   "styleIsolation": "apply-shared"
 }

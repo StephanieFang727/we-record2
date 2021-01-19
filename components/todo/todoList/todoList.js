@@ -41,7 +41,43 @@ create.Component({
    * 组件的方法列表
    */
   methods: {
-  // 获取最新列表
+  // 获取todolist源数据
+  getListData: async function() {
+    const {date} = this.store.data;
+    console.log(date);
+    let calendarData = {};
+    try {
+      calendarData = await getStorageData('todoInDay');
+    } catch(e) {
+      console.log(e),
+      calendarData = {};
+    }
+    this.setData({
+      calendarData,
+      listData: calendarData[date] || [],
+    })
+ },
+ // 存储todolist数据
+ setListData: async function(listData) {
+   const {date} = this.store.data;
+   let temp = this.data.calendarData;
+   temp[date] = listData;
+   try{
+     await setStorageData('todoInDay',temp);
+   } catch(e) {
+     console.log(e)
+   }
+   this.setData({
+     calendarData: temp
+   })
+ },
+ initCurList: async function () {
+   await this.getListData();
+   this.setData({
+     curList: this.getList(),
+   })
+ },
+  // 获取最新展示列表
   getList: function(){
     let curList = [];
     const { listData: data } = this.data;
@@ -69,7 +105,7 @@ create.Component({
       curList: this.getList(),
     })
   },
-
+  // 表单相关处理函数============================================================
   // 添加任务函数
   bindAddTap: function(e) {
     this.setData({
@@ -110,42 +146,7 @@ create.Component({
   formReset: function(e) {
 
   },
-   // 获取todolist源数据
-  getListData: async function() {
-     const {date} = this.store.data;
-     console.log(date);
-     let calendarData = {};
-     try {
-       calendarData = await getStorageData('todoInDay');
-     } catch(e) {
-       console.log(e),
-       calendarData = {};
-     }
-     this.setData({
-       calendarData,
-       listData: calendarData[date] || [],
-     })
-  },
-  // 存储todolist数据
-  setListData: async function(listData) {
-    const {date} = this.store.data;
-    let temp = this.data.calendarData;
-    temp[date] = listData;
-    try{
-      await setStorageData('todoInDay',temp);
-    } catch(e) {
-      console.log(e)
-    }
-    this.setData({
-      calendarData: temp
-    })
-  },
-  initCurList: async function () {
-    await this.getListData();
-    this.setData({
-      curList: this.getList(),
-    })
-  },
+ 
  // ListItem相关处理函数 =======================================
   onCurlistChange: function(e){
     // 将拼接好的样式设置到当前item中

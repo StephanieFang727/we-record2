@@ -1,0 +1,41 @@
+<!--components/todo/todoForm/todoForm.wxml-->
+<view class='todoForm-box' style="display: {{isFormShow ? 'block': 'none'}}">
+    <form class='todoForm' catchsubmit="formSubmit" catchreset="formReset">
+      <view class="weui-cell weui-cell_input">
+        <textarea
+        class="weui-textarea" 
+        placeholder="请输入文本" 
+        style="height: 3.3em" 
+        value="{{selectedItem.name}}"
+        name="name"/>
+          <view class="weui-textarea-counter">0/100</view>
+        </view>
+      <view class="weui-cell">
+        <text>是否紧急</text>
+        <switch
+        class="tocdoForm-switch"
+        checked="{{selectedItem.isUrgent}}"
+        name="isUrgent"
+        color="#FAED26"/>
+      </view>
+      <view class="todoForm-btn_group">
+        <button 
+        class="todoForm-add_btn btn" 
+        type="primary" 
+        size="mini"
+        formType="submit"
+        >
+        确定
+      </button>
+        <button 
+        class="todoForm-cancel_btn btn cancel_btn" 
+        type="default" 
+        bindtap="hideForm" 
+        size="mini"
+        form-type='reset'
+        >
+        取消
+      </button>
+      </view>
+    </form>
+</view>
