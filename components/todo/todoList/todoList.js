@@ -51,9 +51,12 @@ create.Component({
       calendarData = await getStorageData('todoInDay');
     } catch(e) {
       console.log(e),
-      calendarData[date] = {};
+      calendarData = {};
     }
-    const listData = calendarData[date].listData || [];
+    if(!calendarData[date]){
+     calendarData[date] = {};
+    }
+    const listData = calendarData[date].listData || [] ;
     const todoCount = calendarData[date].todoCount || 0;
     this.setData({
       calendarData,

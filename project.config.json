@@ -64,6 +64,12 @@
         {
           "name": "pages/calendar/calendar",
           "pathName": "pages/calendar/calendar",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/calendar/calendar",
+          "pathName": "pages/calendar/calendar",
           "scene": null
         }
       ]
