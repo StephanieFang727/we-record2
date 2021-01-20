@@ -17,15 +17,45 @@
   /* justify-content: space-between; */
 }
 .td {
+  position: relative;
   width: 14.2857%;
+  height: 100rpx;
   text-align: center;
+  overflow: hidden;
+  padding: 16rpx 16rpx;
+  /* border: 1rpx solid black; */
   /* border-radius: 45%; */
 }
-.td:active{
-  /* background-color: #C8A9D3; */
+.td_content {
+  width: 100%;
+  height: 100%;
+  /* background-color: yellow; */
+  border-radius: 45%;
+}
+.td_content:focus {
+  border: 1px solid #C077AF;
+}
+.td .cal_icon-group {
+ position: relative;
+ width: 100%;
+ height: 10rpx;
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+}
+.td .cal_icon {
+  /* position: absolute; */
+  /* bottom: 6rpx; */
+  font-size: 16px;
+}
+.cal_icon.todo_icon {
+  color: #C077AF;
+}
+.cal_icon.exer_icon {
+  color: #66cccc;
 }
 .th,.td {
-  padding: 6px;
+  /* padding: 6px; */
   /* border-bottom: 1px solid #dadada;
   border-right: 1px solid #dadada; */
   text-align: center;
@@ -38,3 +68,6 @@
 .tbody .cal_pre,.cal_next {
   color: #ccc;
 }
+/* .td.cal_cur{
+  background-image: url(/images/exercise1.png);
+} */

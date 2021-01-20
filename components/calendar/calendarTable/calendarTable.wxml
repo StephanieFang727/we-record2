@@ -5,13 +5,20 @@
   </view>
   <view class='tbody'>
     <view class="td cal_pre" wx:for="{{preArr}}" wx:key="index">
-      {{item.date}}
+      {{item.day}}
     </view>
     <view class="td cal_cur" wx:for="{{curMonthArr}}" wx:key="index">
-      {{item.date}}
+      <view class="td_content">
+        <text>{{item.day}}</text>
+        <view class="cal_icon-group">
+          <icon class="cal_icon todo_icon iconfont icon-dian" wx:if="{{curMonthTodo[item.date].todoCount}}"></icon>
+          <icon class="cal_icon exer_icon iconfont icon-dian"
+          wx:if="{{curMonthTodo[item.date].isExerise}}"></icon>
+        </view>
+      </view>
     </view>
     <view class="td cal_next" wx:for="{{nextArr}}" wx:key="index">
-      {{item.date}}
+      {{item.day}}
     </view>
   </view>
 </view>  

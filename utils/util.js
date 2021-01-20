@@ -44,7 +44,10 @@ const getIndex = ((arr,item)=>{
       30, 31, 30, 31
     ];
     let count = arr[month] || (isLeapYear(year) ? 29 : 28);
-    return Array.from(new Array(count),(value,i) => {return ({date: i+1})});
+    return Array.from(new Array(count),(value,i) => {
+      i ++;
+      i = i > 9 ? i : '0'+ i;
+      return {date: `${year}-${month > 9 ? month : '0' + month }-${i}`,day: parseInt(i)}});
   };
   // 3.获得某年某月的 1号 是星期几
   const getFirstday = (year, month) => {
