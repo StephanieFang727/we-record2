@@ -32,8 +32,11 @@
   /* background-color: yellow; */
   border-radius: 45%;
 }
-.td_content:focus {
-  border: 1px solid #C077AF;
+.td_content.active {
+  border: 3rpx solid #C077AF;
+}
+.td_content .td_curdate {
+  color: #C077AF
 }
 .td .cal_icon-group {
  position: relative;

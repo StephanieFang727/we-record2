@@ -26,7 +26,8 @@ create.Component({
   //   }
   // },
   use:[
-    'month'
+    'month',
+    'curDate',
   ],
   /**
    * 组件的初始数据
@@ -37,12 +38,18 @@ create.Component({
     preArr: [],
     nextArr: [],
     curMonthTodo: {},
+    selectedDate: '',
   },
   lifetimes: {
     attached: function() {
       // 在组件实例进入页面节点树时执行
       // 可以执行一些初始化操作
      // this.updateCalendarArr();
+    },
+    ready: function(){
+      this.setData({
+        selectedDate: this.store.data.curDate
+      })
     },
     detached: function() {
       // 在组件实例被从页面节点树移除时执行
@@ -52,7 +59,8 @@ create.Component({
     // 页面被切换到时也要重新拉一遍数据
     // TODO: 如何避免无用拉取？
     show: function(){
-
+      // this.updateCalendarArr()
+      // this.getTodoInCurMonth()
     }
   },
   observers: {
@@ -93,6 +101,7 @@ create.Component({
         nextArr,
       };
     },
+    // todo事件=====================================
     // 获取对应月份事件相应方法
     getAllCalendarTodo: async function() {
       let calendarData = {};
@@ -126,6 +135,18 @@ create.Component({
       console.log(curMonthTodo);
       this.setData({
         curMonthTodo,
+      })
+    },
+    // 事件处理函数============================
+    bindDateTap: function(e){
+      this.setData({
+        selectedDate: e.currentTarget.dataset.date
+      })
+    },
+    bindDetailTap: function(e){
+     this.store.data.date = this.data.selectedDate;
+      wx.switchTab({
+        url: '/pages/todos/todos',
       })
     }
   }

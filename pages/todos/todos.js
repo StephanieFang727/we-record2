@@ -1,7 +1,7 @@
 // pages/todos.js
 import create from '../../utils/create'
 import store from '../../store/index'
-
+import {formatDay} from "../../utils/util"
 
 create.Page(store, {
   use:[
@@ -17,7 +17,7 @@ create.Page(store, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-   
+    this.store.data.date = formatDay(new Date());
   },
 
   /**
@@ -31,7 +31,7 @@ create.Page(store, {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    // this.store.data.date = formatDay(new Date());
   },
 
   /**

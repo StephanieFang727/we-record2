@@ -8,8 +8,10 @@
       {{item.day}}
     </view>
     <view class="td cal_cur" wx:for="{{curMonthArr}}" wx:key="index">
-      <view class="td_content">
-        <text>{{item.day}}</text>
+      <view class="td_content{{item.date === selectedDate ? ' active' : ''}}" 
+      bindtap="bindDateTap" 
+      data-date="{{item.date}}">
+        <text class="{{item.date === curDate ? 'td_curdate': ''}}">{{item.day}}</text>
         <view class="cal_icon-group">
           <icon class="cal_icon todo_icon iconfont icon-dian" wx:if="{{curMonthTodo[item.date].todoCount}}"></icon>
           <icon class="cal_icon exer_icon iconfont icon-dian"
@@ -21,4 +23,24 @@
       {{item.day}}
     </view>
   </view>
-</view>  
+</view> 
+<view class="cal_detail-box">
+  <view class="cal_detail">
+    <text wx:if="{{!selectedDate || (selectedDate == curDate)}}">今日待办</text>
+    <text wx:else>当日待办</text>
+    <text>3 项</text>
+    <!-- <navigator url="/pages/todos/todos?date=`${selectedDate}`"
+    open-type="switchTab"
+    hover-class="navigator-hover">详情</navigator> -->
+    <navigator url="/pages/todos/todos"
+    bindtap="bindDetailTap"
+    >详情</navigator>
+  </view>
+  <view class="cal_detail">
+    <text>运动打卡</text>
+    <switch
+    class="cal_detail-switch"
+    checked
+    color="#66cccc"/>
+  </view>
+</view>

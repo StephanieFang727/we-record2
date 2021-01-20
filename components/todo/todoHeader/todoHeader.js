@@ -1,6 +1,6 @@
 // components/todo/todoHeader.js
 import create from '../../../utils/create'
-import {formatTime} from '../../../utils/util';
+import {formatDay} from '../../../utils/util';
 
 create.Component({
   use:[
@@ -24,7 +24,7 @@ create.Component({
   // },
   lifetimes: {
     ready(){
-      this.store.data.date = formatTime(new Date());
+      
     }
   },
   /**

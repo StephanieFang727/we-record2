@@ -1,5 +1,5 @@
 // 格式化日期为xxxx-xx-xx
-const formatTime = date => {
+const formatDay = date => {
   const year = date.getFullYear()
   let month = date.getMonth() + 1
   let day = date.getDate()
@@ -74,7 +74,7 @@ const getIndex = ((arr,item)=>{
  * 日历相关方法end
  */
 module.exports = {
-  formatTime: formatTime,
+  formatDay,
   formatMonth,
   getIndex,
   isLeapYear,

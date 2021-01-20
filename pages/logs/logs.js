@@ -8,7 +8,7 @@ create.Page(store, {
   use: ['logs'],
   onLoad: function () {
     this.store.data.logs = (wx.getStorageSync('logs') || []).map(log => {
-      return util.formatTime(new Date(log))
+      return util.formatDay(new Date(log))
     })
   }
 })

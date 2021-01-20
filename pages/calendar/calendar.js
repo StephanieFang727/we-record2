@@ -1,21 +1,26 @@
 // pages/calendar/calendar.js
 import create from '../../utils/create'
 import store from '../../store/index'
+import {formatMonth, formatDay} from  "../../utils/util"
 
 
 create.Page(store, {
+  use:[
+    
+  ],
   /**
    * 页面的初始数据
    */
-  data: {
-    year: '',
-    month: '',
-  },
+  // data: {
+  //   year: '',
+  //   month: '',
+  // },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    this.store.data.month = formatMonth(new Date().getFullYear(), new Date().getMonth() + 1); 
+    this.store.data.curDate = formatDay(new Date());
   },
 
   /**

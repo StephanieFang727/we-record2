@@ -34,7 +34,6 @@ create.Component({
   
     },
     ready: function() {
-      this.store.data.month = formatMonth(new Date().getFullYear(), new Date().getMonth() + 1);     
     },
     detached: function() {
       // 在组件实例被从页面节点树移除时执行
