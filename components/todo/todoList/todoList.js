@@ -2,10 +2,13 @@
 import create from '../../../utils/create'
 import {getStorageData, setStorageData, wxp}  from '../../../utils/api';
 import {getIndex} from '../../../utils/util'
+const calTodoBehavior = require('../../calTodo-behavior')
 
 create.Component({
+  behaviors:[calTodoBehavior],
   use:[
     "date",
+    "calendarData",
   ],
   // properties: {
   //   // 这里定义了innerText属性，属性值可以在组件使用时指定
@@ -19,7 +22,7 @@ create.Component({
     isFormShow: false,
     listData: [], // 列表源数据
     curList:[], // 当前展示列表
-    calendarData: {}, // 日历源数据
+    // calendarData: {}, // 日历源数据
     todoCount: 0, // 当日待办
     selectedTodoName: '',
     selectedIsUrgent: '',
@@ -46,39 +49,20 @@ create.Component({
   // 获取todolist源数据
   getListData: async function() {
     const {date} = this.store.data;
-    let calendarData = {};
-    try {
-      calendarData = await getStorageData('todoInDay');
-    } catch(e) {
-      console.log(e),
-      calendarData = {};
-    }
-    if(!calendarData[date]){
-     calendarData[date] = {};
-    }
+    let calendarData = await this.getAllCalendarData(date);
+    console.log(calendarData);
     const listData = calendarData[date].listData || [] ;
     const todoCount = calendarData[date].todoCount || 0;
     this.setData({
-      calendarData,
       listData,
       todoCount,
     })
-    console.log(calendarData);
+    // console.log(calendarData[date]);
  },
  // 存储todolist数据
  setListData: async function(todoDetail) {
    const {date} = this.store.data;
-   let temp = this.data.calendarData;
-   temp[date] = {...temp[date], ...todoDetail};
-   console.log(temp);
-   try{
-     await setStorageData('todoInDay',temp);
-   } catch(e) {
-     console.log(e)
-   }
-   this.setData({
-     calendarData: temp
-   })
+   await this.setCalendarData(todoDetail, date);
  },
  initCurList: async function () {
    await this.getListData();
@@ -129,7 +113,7 @@ create.Component({
     })
   },
   // 提交表单函数
-  formSubmit: function(e) {
+  formSubmit: async function(e) {
     const {formType, selectedItem: item} = this.data;
     let {todoCount} = this.data;
     let listData = [];
@@ -146,7 +130,7 @@ create.Component({
       let temp = listData.splice(index,1, newItem);
       console.log(temp);
     }
-    this.setListData({
+    await this.setListData({
       listData,
       todoCount,
     });
@@ -211,13 +195,13 @@ create.Component({
       selectedItem: item,
     })
   },
-  bindUrgentTap: function(e) {
+  bindUrgentTap: async function(e) {
     const { id } = e.detail.value;
     console.log(id);
     const {curList: list } = this.data;
     let item = list.filter(item=>item.id === id)[0];
     item.isUrgent = !item.isUrgent;
-    this.setListData({
+    await this.setListData({
       listData: this.data.listData
     });
     this.initCurList();
@@ -234,14 +218,14 @@ create.Component({
       }
     })
   },
-  delTodo: function(item){
+  delTodo: async function(item){
     let {todoCount} = this.data;
     let listData = this.data.listData.filter(v=>v.id!==item.id);
     console.log(listData,123);
     if(!item.completed){// 如果删除的是未完成的事项 则todoCount也要相应减一
       todoCount --;
     }
-    this.setListData({
+    await this.setListData({
       listData,
       todoCount
     });

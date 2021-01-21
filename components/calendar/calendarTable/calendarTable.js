@@ -106,7 +106,7 @@ create.Component({
     getAllCalendarTodo: async function() {
       let calendarData = {};
       try {
-        calendarData = await getStorageData('todoInDay');
+        calendarData = await getStorageData('allCalData');
       } catch(e) {
         console.log(e),
         calendarData = {};
@@ -114,6 +114,7 @@ create.Component({
       return calendarData;
     },
     getTodoInCurMonth: async function(){
+      // 不用每次都拉一遍所有数据
       const calendarData = await this.getAllCalendarTodo();
       let curMonthTodo = {};
       for (let date in calendarData){
