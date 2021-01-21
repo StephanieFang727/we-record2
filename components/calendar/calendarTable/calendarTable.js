@@ -1,12 +1,15 @@
 // components/calendar/calendarTable.js
 import create from '../../../utils/create'
-import { 
+import {
+  formatDateToMonth,
   getMonthArr,
   getFirstday,
   getPreMonthArr,
-  getNextMonthArr,
+  getNextMonthArr, formatDate
 } from "../../../utils/util"
 import {getStorageData}  from '../../../utils/api';
+
+const calTodoBehavior = require('../../calTodo-behavior')
 
 create.Component({
   // options: {
@@ -25,6 +28,7 @@ create.Component({
   //     value: 0,
   //   }
   // },
+  behaviors:[calTodoBehavior],
   use:[
     'month',
     'curDate',
@@ -37,6 +41,7 @@ create.Component({
     curMonthArr: [],
     preArr: [],
     nextArr: [],
+    calendarData: '',// 日历事件源数据
     curMonthTodo: {},
     selectedDate: '',
   },
@@ -44,7 +49,7 @@ create.Component({
     attached: function() {
       // 在组件实例进入页面节点树时执行
       // 可以执行一些初始化操作
-     // this.updateCalendarArr();
+     // this.initCalendarArr();
     },
     ready: function(){
       this.setData({
@@ -59,13 +64,24 @@ create.Component({
     // 页面被切换到时也要重新拉一遍数据
     // TODO: 如何避免无用拉取？
     show: function(){
-      // this.updateCalendarArr()
+      // this.initCalendarArr()
       // this.getTodoInCurMonth()
     }
   },
   observers: {
-    'month': function() {
-      this.updateCalendarArr();  // 更新日历
+    'month': function(month) {
+     // TODO 持久化 不用每次都计算
+      this.initCalendarArr();  // 初始化日历
+      // 如果不是本月，光圈聚焦在当月第一天
+      if(month !== formatDateToMonth(new Date())){
+        this.setData({
+          selectedDate: `${month}-01`
+        })
+      }else {
+        this.setData({
+          selectedDate: formatDate(new Date())
+        })
+      }
       // 拉取对应月份的事件
       this.getTodoInCurMonth()
     }
@@ -75,7 +91,7 @@ create.Component({
    */
   methods: {
     // 更新日历相关方法==================================================================================
-    updateCalendarArr: function(){
+    initCalendarArr: function(){
       const [year, month] = this.store.data.month.split('-').map(item => parseInt(item));
       const { preArr, curMonthArr, nextArr} = this.getCalendarArr(year, month);
       this.setData({
@@ -104,13 +120,16 @@ create.Component({
     // todo事件=====================================
     // 获取对应月份事件相应方法
     getAllCalendarTodo: async function() {
-      let calendarData = {};
-      try {
-        calendarData = await getStorageData('allCalData');
-      } catch(e) {
-        console.log(e),
-        calendarData = {};
+      // 不用每次都拉取日历事件数据
+      let {calendarData} = this.data;
+      if(calendarData){
+        return calendarData;
       }
+      calendarData = await this.getAllCalendarData();
+      this.setData({
+        calendarData
+      })
+      console.log(calendarData);
       return calendarData;
     },
     getTodoInCurMonth: async function(){

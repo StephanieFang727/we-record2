@@ -1,6 +1,6 @@
 // components/todo/todoList/todoList.js
 import create from '../../../utils/create'
-import {getStorageData, setStorageData, wxp}  from '../../../utils/api';
+import {wxp}  from '../../../utils/api';
 import {getIndex} from '../../../utils/util'
 const calTodoBehavior = require('../../calTodo-behavior')
 
@@ -21,7 +21,7 @@ create.Component({
     isFormShow: false,
     listData: [], // 列表源数据
     curList:[], // 当前展示列表
-    calendarData: {}, // 日历源数据
+    calendarData: '', // 日历源数据
     todoCount: 0, // 当日待办
     selectedTodoName: '',
     selectedIsUrgent: '',
@@ -48,7 +48,11 @@ create.Component({
   // 获取todolist源数据
   getListData: async function() {
     const {date} = this.store.data;
-    let calendarData = await this.getAllCalendarData(date);
+    // 不用每次都拉取日历事件数据
+    let calendarData = this.data.calendarData || await this.getAllCalendarData();
+    if(!calendarData[date]){
+      calendarData[date] = {};
+     }
     console.log(calendarData);
     const listData = calendarData[date].listData || [] ;
     const todoCount = calendarData[date].todoCount || 0;

@@ -1,6 +1,6 @@
 // components/todo/todoHeader.js
 import create from '../../../utils/create'
-import {formatDay} from '../../../utils/util';
+import {formatDate} from '../../../utils/util';
 
 create.Component({
   use:[

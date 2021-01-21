@@ -23,16 +23,14 @@ module.exports = Behavior({
   },
 
   methods: {
-    getAllCalendarData: async function(date) {
+    getAllCalendarData: async function() {
+      console.log('get')
       let calendarData ={}; 
       try {
         calendarData = await getStorageData('allCalData');
       } catch(e) {
         console.log(e);
       }
-      if(!calendarData[date]){
-        calendarData[date] = {};
-       }
       return calendarData;
   },
   setCalendarData: async function(todoDetail, date, calData) {
