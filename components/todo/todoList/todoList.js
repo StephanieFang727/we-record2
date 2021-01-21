@@ -8,7 +8,6 @@ create.Component({
   behaviors:[calTodoBehavior],
   use:[
     "date",
-    "calendarData",
   ],
   // properties: {
   //   // 这里定义了innerText属性，属性值可以在组件使用时指定
@@ -22,7 +21,7 @@ create.Component({
     isFormShow: false,
     listData: [], // 列表源数据
     curList:[], // 当前展示列表
-    // calendarData: {}, // 日历源数据
+    calendarData: {}, // 日历源数据
     todoCount: 0, // 当日待办
     selectedTodoName: '',
     selectedIsUrgent: '',
@@ -56,13 +55,16 @@ create.Component({
     this.setData({
       listData,
       todoCount,
+      calendarData
     })
     // console.log(calendarData[date]);
  },
  // 存储todolist数据
  setListData: async function(todoDetail) {
    const {date} = this.store.data;
-   await this.setCalendarData(todoDetail, date);
+   this.setData({
+    calendarData: await this.setCalendarData(todoDetail, date, this.data.calendarData)
+   })
  },
  initCurList: async function () {
    await this.getListData();
@@ -156,7 +158,7 @@ create.Component({
     })
   },
   // 点击item处理函数
-  bindTodoTap: function(e) {
+  bindTodoTap: async function(e) {
     const { id } = e.detail.value;
     const {curList: list } = this.data;
     let {todoCount} = this.data;
@@ -165,7 +167,7 @@ create.Component({
     if(!item.completed){ //未完成-->已完成
       item.completed = !item.completed;
       todoCount --;
-      this.setListData({
+      await this.setListData({
         listData: this.data.listData,
         todoCount,
       });
@@ -173,11 +175,11 @@ create.Component({
     } else {
       wxp.showModal({
         content: '该任务已完成，确定重新打开吗？',
-        success: (e) => {
+        success: async (e) => {
           if(e.confirm){
             item.completed = !item.completed;
             todoCount ++;
-            this.setListData({
+            await this.setListData({
               listData: this.data.listData,
               todoCount
             });

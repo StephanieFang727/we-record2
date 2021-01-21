@@ -24,34 +24,26 @@ module.exports = Behavior({
 
   methods: {
     getAllCalendarData: async function(date) {
-      let calendarData = this.store.data.calendarData; 
-      if(!calendarData){
-        try {
-          calendarData = await getStorageData('allCalData');
-        } catch(e) {
-          console.log(e);
-          calendarData = {};
-        }
+      let calendarData ={}; 
+      try {
+        calendarData = await getStorageData('allCalData');
+      } catch(e) {
+        console.log(e);
       }
       if(!calendarData[date]){
         calendarData[date] = {};
        }
-      this.store.data.calendarData = calendarData;
-      console.log(this.store.data.calendarData);
       return calendarData;
   },
-  setCalendarData: async function(todoDetail, date) {
-    let temp = Object.assign({}, this.store.data.calendarData);
-    console.log(temp, date);
-     temp[date] = {...temp[date], ...todoDetail};
+  setCalendarData: async function(todoDetail, date, calData) {
+    let temp = calData;
+    temp[date] = {...temp[date], ...todoDetail};
     console.log(temp[date]);
     try{
       await setStorageData('allCalData',temp);
     } catch(e) {
       console.log(e)
     }
-    
-    this.store.data.calendarData = temp;
     return temp;
   }
 }
