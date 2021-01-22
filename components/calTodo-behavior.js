@@ -36,7 +36,6 @@ module.exports = Behavior({
   setCalendarData: async function(todoDetail, date, calData) {
     let temp = calData;
     temp[date] = {...temp[date], ...todoDetail};
-    console.log(temp[date]);
     try{
       await setStorageData('allCalData',temp);
     } catch(e) {

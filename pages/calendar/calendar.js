@@ -15,10 +15,17 @@ create.Page(store, {
   //   year: '',
   //   month: '',
   // },
+  // handler:  function (evt) {
+  //   console.log(evt)
+  // },
+  //监听，允许绑定多个
+  
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // store.onChange(this.handler),
+    console.log("change");
     this.store.data.month = formatMonth(new Date().getFullYear(), new Date().getMonth() + 1); 
     this.store.data.curDate = formatDate(new Date());
   },

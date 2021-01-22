@@ -8,6 +8,7 @@ create.Component({
   behaviors:[calTodoBehavior],
   use:[
     "date",
+    "updateFlag",
   ],
   // properties: {
   //   // 这里定义了innerText属性，属性值可以在组件使用时指定
@@ -145,6 +146,9 @@ create.Component({
       isFormShow: false,
       selectedItem: {},
     })
+    if(formType==='add'){
+      this.store.data.updateFlag = !this.store.data.updateFlag;
+    }
   },
  // 重置表单
   formReset: function(e) {
@@ -167,7 +171,6 @@ create.Component({
     const {curList: list } = this.data;
     let {todoCount} = this.data;
     let item = list.filter(item=>item.id === id)[0];
-    console.log(item.completed);
     if(!item.completed){ //未完成-->已完成
       item.completed = !item.completed;
       todoCount --;
@@ -176,6 +179,7 @@ create.Component({
         todoCount,
       });
       this.initCurList();
+      this.store.data.updateFlag = !this.store.data.updateFlag;
     } else {
       wxp.showModal({
         content: '该任务已完成，确定重新打开吗？',
@@ -188,6 +192,7 @@ create.Component({
               todoCount
             });
             this.initCurList();
+            this.store.data.updateFlag = !this.store.data.updateFlag;
           }
         }
       })
@@ -220,6 +225,7 @@ create.Component({
       success: (e) => {
         if (e.confirm) {
           this.delTodo(item);
+          this.store.data.updateFlag = !this.store.data.updateFlag;
         }
       }
     })

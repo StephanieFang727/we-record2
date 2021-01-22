@@ -74,7 +74,7 @@ create.Component({
         month ++;
       }
     }
-    this.store.data.month = formatMonth(year, month);
+    // this.store.data.month = formatMonth(year, month);
     // this.triggerEvent('monthChange',{value:{
     //   year,
     //   month
