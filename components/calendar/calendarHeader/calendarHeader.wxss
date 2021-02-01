@@ -1,6 +1,7 @@
 /* components/calendar/calendarHeader.wxss */
 .cal_header {
   display: flex;
+  height: 60rpx;
   justify-content: space-between;
   margin-bottom: 48rpx;
 }

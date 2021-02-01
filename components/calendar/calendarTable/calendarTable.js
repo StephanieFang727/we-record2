@@ -7,7 +7,7 @@ import {
   getPreMonthArr,
   getNextMonthArr, formatDate
 } from "../../../utils/util"
-import {getStorageData}  from '../../../utils/api';
+import {wxp, getRpx}  from '../../../utils/api';
 
 const calTodoBehavior = require('../../calTodo-behavior')
 
@@ -45,15 +45,22 @@ create.Component({
     calendarData: '',// 日历事件源数据
     curMonthTodo: {},
     selectedDate: '',
-    _count: 0,//用于记录是否是第一次刷新
+    _count: 0,//用于记录是否是第一次刷新,
+    tdStyle: 'height: 100rpx',
+    tableStyle: '',
+    tdHeight: 100,
+    showDetailBox: true,
   },
   lifetimes: {
     attached: function() {
       // 在组件实例进入页面节点树时执行
       // 可以执行一些初始化操作
      // this.initCalendarArr();
+     const {windowHeight} = wxp.getSystemInfoSync();
+     const tdMaxHeight = (windowHeight*getRpx()-240)/6;
      this.setData({
-       _count: 1
+       _count: 1,
+       tdMaxHeight
      })
     },
     ready: function(){
@@ -93,6 +100,7 @@ create.Component({
       this.getTodoInCurMonth()
     },
     'updateFlag': async function(updateFlag){
+      // todo数据有更新时刷新日历数据，第一次不用刷新
       if(this.data._count === 1){
         this.setData({
           _count: 0
@@ -107,6 +115,74 @@ create.Component({
    * 组件的方法列表
    */
   methods: {
+    // touch日历相关方法
+    bindTbodyS: function(e){
+      if(e.touches.length !== 1) return;
+      this.setData({
+      // 触摸起始的X坐标
+      startY: e.touches[0].clientY
+      })
+    },
+    bindTbodyM: function(e){
+      if(e.touches.length !== 1) return;
+      const {startY, tdMaxHeight} = this.data;
+      let {tdHeight} = this.data;
+      let tdStyle = '';
+      let nH = 0;
+      // 触摸点的X坐标
+      const moveY = e.touches[0].clientY
+      // 计算手指起始点的X坐标与当前触摸点的X坐标的差值
+      const disY = moveY - startY;
+      nH = disY + tdHeight;// todo
+      // console.log("tdh"+tdHeight);
+      // console.log("nh"+nH);
+     // if (disY > 0 ){ // 移动距离大于0，文本层left值等于手指移动距离
+        tdStyle = 'height:' + nH + 'rpx';
+        if(nH >= tdMaxHeight){
+          tdStyle = 'height:' + tdMaxHeight + 'rpx';
+        }
+        if(nH <= 100){
+          // 控制手指移动距离最大值为删除按钮的宽度
+          tdStyle = 'height:' + 100 + 'rpx';
+        }
+      //}
+      // 将拼接好的样式设置到当前item中
+      this.setData({
+        tdStyle
+      })
+    },
+    bindTbodyE: function(e){
+      if(e.changedTouches.length !== 1) return;
+      const {startY, tdMaxHeight} = this.data;
+      let {tdHeight, showDetailBox} = this.data;
+      let tdStyle = '';
+      let nH = 0;
+      // 触摸点的X坐标
+      const moveY = e.changedTouches[0].clientY;
+      // 计算手指起始点的X坐标与当前触摸点的X坐标的差值
+      const disY = moveY - startY;
+      nH = disY + tdHeight;
+      if(disY > -10 && disY < 10){
+        return;
+      }
+      if (disY >= 10){ // 移动距离大于0，文本层left值等于手指移动距离
+          tdStyle = 'height:' + tdMaxHeight + 'rpx';
+          tdHeight = tdMaxHeight;
+          showDetailBox = false;
+      }
+      if (disY <= -10){ // 移动距离大于0，文本层left值等于手指移动距离
+        tdStyle = 'height:' + 100 + 'rpx';
+        tdHeight = 100;
+        showDetailBox = true;
+      }
+      // 将拼接好的样式设置到当前item中
+      this.setData({
+        tdStyle,
+        tdHeight,
+        showDetailBox
+      })
+      // console.log("tdheight"+this.data.tdHeight);
+    },
     // 更新日历相关方法==================================================================================
     initCalendarArr: function(){
       const [year, month] = this.store.data.month.split('-').map(item => parseInt(item));

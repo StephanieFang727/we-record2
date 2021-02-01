@@ -4,6 +4,10 @@ const wxp = {}
 // promisify all wx's api
 promisifyAll(wx, wxp)
 
+const getRpx = () => { 
+  const {windowWidth} = wxp.getSystemInfoSync();
+  return 750/windowWidth;
+}
 const getStorageData = (key) => {
   return new Promise((resolve, reject)=>{
     wx.getStorage({
@@ -36,5 +40,6 @@ const setStorageData = (key, data) =>{
 module.exports = {
   getStorageData,
   setStorageData,
-  wxp
+  wxp,
+  getRpx, // 获取px与rpx比例
 }

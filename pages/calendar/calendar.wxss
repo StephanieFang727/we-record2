@@ -1,4 +1,7 @@
 /* pages/calendar/calendar.wxss */
 .cal_content {
-  padding: 0 16rpx;
+  /* padding: 0 16rpx; */
+  display: flex;
+  flex-flow: column;
+  flex: 1;
 }

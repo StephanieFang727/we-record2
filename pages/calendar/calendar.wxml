@@ -2,8 +2,6 @@
 <view class="page">
   <view class='container'>
       <CalendarHeader></CalendarHeader>
-      <view class='cal_content'>
-         <CalendarTable></CalendarTable>
-      </view>
+      <CalendarTable class='cal_content'></CalendarTable>
   </view>
 </view>

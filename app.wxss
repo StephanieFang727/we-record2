@@ -9,15 +9,18 @@ view {
   
   /* background-color: rgb(58,175,169,0.6); */
   /* background-color: #3AAFA9; */
-  background-color: #f7f7f7;
+  background-color: #fafafa;
+  /* background-color: #ffffff; */
   /* color: #2C3E50; */
   /* color: #22B6ED */
   color: #1A2A3A;
 }
 .container {
+  display: flex;
+  flex-flow: column;
   min-height: 100vh;
   /* background-color: #DEF2F1; */
-  padding: 30rpx 0;
+  padding: 30rpx 0 0 0;
 } 
 .btn {
   background-color: #C077AF !important ;

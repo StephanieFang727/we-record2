@@ -55,6 +55,9 @@ create.Component({
    */
   methods: {
     // 月份选择处理
+  bindMonthSelect: function(e){
+    this.store.data.month = e.detail.value;
+  },
   bindMonthChange: function(e){
     const {type} = e.currentTarget.dataset;
     let [year, month] = this.store.data.month.split('-').map(item => parseInt(item));
@@ -74,7 +77,7 @@ create.Component({
         month ++;
       }
     }
-    // this.store.data.month = formatMonth(year, month);
+    this.store.data.month = formatMonth(year, month);
     // this.triggerEvent('monthChange',{value:{
     //   year,
     //   month

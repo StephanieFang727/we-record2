@@ -1,17 +1,28 @@
 <!--components/calendar/calendarTable.wxml-->
+<view class='comp-cal_content'
+  bindtouchstart="bindTbodyS"
+  bindtouchmove="bindTbodyM"
+  bindtouchend="bindTbodyE"
+>
 <view class="table">
   <view class="thead">
     <view class="th" wx:for="{{weekArr}}" wx:key="index">{{item}}</view>
   </view>
   <view class='tbody'>
-    <view class="td cal_pre" wx:for="{{preArr}}" wx:key="index">
-      {{item.day}}
+    <view class="td cal_pre" style="{{tdStyle}}"
+    wx:for="{{preArr}}" wx:key="index">
+      <view class='td_content'>
+        <view class='text'>{{item.day}}</view>
+      </view>
     </view>
-    <view class="td cal_cur" wx:for="{{curMonthArr}}" wx:key="index">
+    <view class="td cal_cur" style="{{tdStyle}}"
+    wx:for="{{curMonthArr}}" wx:key="index">
       <view class="td_content{{item.date === selectedDate ? ' active' : ''}}" 
-      bindtap="bindDateTap" 
+      catchtap="bindDateTap" 
       data-date="{{item.date}}">
-        <text class="{{item.date === curDate ? 'td_curdate': ''}}">{{item.day}}</text>
+        <view class="text{{item.date === curDate ? ' td_curdate': ''}}">
+          {{item.day}}
+        </view>
         <view class="cal_icon-group">
           <icon class="cal_icon todo_icon iconfont icon-dian" wx:if="{{curMonthTodo[item.date].todoCount}}"></icon>
           <icon class="cal_icon exer_icon iconfont icon-dian"
@@ -19,28 +30,37 @@
         </view>
       </view>
     </view>
-    <view class="td cal_next" wx:for="{{nextArr}}" wx:key="index">
-      {{item.day}}
+    <view class="td cal_next" style="{{tdStyle}}"
+    wx:for="{{nextArr}}" wx:key="index">
+      <view class='td_content'>
+        <view class='text'>{{item.day}}</view>
+      </view>
     </view>
   </view>
 </view> 
-<view class="cal_detail-box">
+<view class="cal_detail-box" wx:if="{{showDetailBox}}">
   <view class="cal_detail">
-    <text wx:if="{{!selectedDate || (selectedDate == curDate)}}">今日待办</text>
-    <text wx:else>当日待办</text>
-    <text>3 项</text>
-    <!-- <navigator url="/pages/todos/todos?date=`${selectedDate}`"
-    open-type="switchTab"
-    hover-class="navigator-hover">详情</navigator> -->
+    <icon></icon>
+    <view wx:if="{{curMonthTodo[selectedDate].todoCount}}">
+      <text wx:if="{{!selectedDate || (selectedDate == curDate)}}">今日待办</text>
+      <text wx:else>当日待办</text>
+      <text>{{curMonthTodo[selectedDate].todoCount}}项</text>
+    </view>
+    <view wx:else>
+      <text wx:if="{{!selectedDate || (selectedDate == curDate)}}">今日无待办</text>
+      <text wx:else>当日无待办</text>
+    </view>
     <navigator url="/pages/todos/todos"
     bindtap="bindDetailTap"
     >详情</navigator>
   </view>
   <view class="cal_detail">
+    <icon></icon>
     <text>运动打卡</text>
     <switch
     class="cal_detail-switch"
     checked
     color="#66cccc"/>
   </view>
+</view>
 </view>
