@@ -146,9 +146,7 @@ create.Component({
       isFormShow: false,
       selectedItem: {},
     })
-    if(formType==='add'){
-      this.store.data.updateFlag = !this.store.data.updateFlag;
-    }
+    this.store.data.updateFlag = !this.store.data.updateFlag;
   },
  // 重置表单
   formReset: function(e) {

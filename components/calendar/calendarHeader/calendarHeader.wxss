@@ -3,12 +3,24 @@
   display: flex;
   height: 60rpx;
   justify-content: space-between;
-  margin-bottom: 48rpx;
+  /* margin-bottom: 48rpx; */
+  margin: 0 24rpx 48rpx 24rpx;
 }
 .cal_header .cal_title {
-  width: 300rpx;
+  width: 50%;
   text-align: center;
   border: 1rpx solid black;
   font-weight: 1000;
   font-size: large;
+}
+.cal_header-fanye{
+  width: 30%;
+  /* display: flex; */
+}
+.cal_header-fanye .fanye-icon{
+  float: right;
+  margin: 0 10rpx;
+}
+.cal_header-fanye .icon{
+  color: #C077AF;
 }

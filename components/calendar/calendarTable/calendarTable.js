@@ -47,20 +47,23 @@ create.Component({
     selectedDate: '',
     _count: 0,//用于记录是否是第一次刷新,
     tdStyle: 'height: 100rpx',
-    tableStyle: '',
     tdHeight: 100,
-    showDetailBox: true,
+    showDetailBox: true, // 是否展示下方详情区
+    tableMode: "shrink", // table拉伸状态，初始为压缩态
   },
   lifetimes: {
     attached: function() {
       // 在组件实例进入页面节点树时执行
       // 可以执行一些初始化操作
      // this.initCalendarArr();
+     const rgx = getRpx();
      const {windowHeight} = wxp.getSystemInfoSync();
-     const tdMaxHeight = (windowHeight*getRpx()-240)/6;
+     const tdMaxHeight = (windowHeight*rgx-240)/6;
+     const itemNum = Math.floor((tdMaxHeight - (750/7)*0.76)/28);// 日期下方最多可容纳todo条数
      this.setData({
        _count: 1,
-       tdMaxHeight
+       tdMaxHeight,
+       itemNum,
      })
     },
     ready: function(){
@@ -109,7 +112,7 @@ create.Component({
       }
       console.log(updateFlag)
       await this.getTodoInCurMonth(true);
-    }
+    },
   },
   /**
    * 组件的方法列表
@@ -154,31 +157,32 @@ create.Component({
     bindTbodyE: function(e){
       if(e.changedTouches.length !== 1) return;
       const {startY, tdMaxHeight} = this.data;
-      let {tdHeight, showDetailBox} = this.data;
+      let {tdHeight, showDetailBox,tableMode} = this.data;
       let tdStyle = '';
-      let nH = 0;
       // 触摸点的X坐标
       const moveY = e.changedTouches[0].clientY;
       // 计算手指起始点的X坐标与当前触摸点的X坐标的差值
       const disY = moveY - startY;
-      nH = disY + tdHeight;
       if(disY > -10 && disY < 10){
         return;
       }
-      if (disY >= 10){ // 移动距离大于0，文本层left值等于手指移动距离
+      if (disY >= 10){ // table拉伸
           tdStyle = 'height:' + tdMaxHeight + 'rpx';
           tdHeight = tdMaxHeight;
-          showDetailBox = false;
+          tableMode = "stretch"; 
+          showDetailBox = false; 
       }
-      if (disY <= -10){ // 移动距离大于0，文本层left值等于手指移动距离
+      if (disY <= -10){ // table压缩
         tdStyle = 'height:' + 100 + 'rpx';
         tdHeight = 100;
-        showDetailBox = true;
+        tableMode = "shrink";  
+        showDetailBox = true; 
       }
       // 将拼接好的样式设置到当前item中
       this.setData({
         tdStyle,
         tdHeight,
+        tableMode,
         showDetailBox
       })
       // console.log("tdheight"+this.data.tdHeight);
@@ -246,13 +250,15 @@ create.Component({
         if(date.slice(0,7) === this.store.data.month){
           // console.log(calendarData[day]);
           /**
-           * curMonthTodoArr 形如：{
-           * "2021-01-11"：{todoCount: 2, isExerise: false},
+           * curMonthTodo 形如：{
+           * "2021-01-11"：{listData: [], todoCount: 2, isExerise: false},
            * "2021-01-20"：{todoCount: 3, isExerise: false}, 
            * }
            * 
            */
           curMonthTodo[date] = {
+            listData:  calendarData[date].listData ? 
+            calendarData[date].listData.slice(0,this.data.itemNum) : [],
             todoCount: calendarData[date].todoCount || 0,
             isExerise: calendarData[date].isExerise || false,
           }
@@ -274,6 +280,14 @@ create.Component({
       wx.switchTab({
         url: '/pages/todos/todos',
       })
+    },
+    bindSwithChange: async function(e){
+      await this.setCalendarData(
+        {isExerise: e.detail.value},
+        this.data.selectedDate,
+        this.data.calendarData
+      );
+      this.store.data.updateFlag = !this.store.data.updateFlag;
     }
   }
 })

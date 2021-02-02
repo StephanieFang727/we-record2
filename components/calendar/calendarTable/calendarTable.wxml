@@ -4,7 +4,7 @@
   bindtouchmove="bindTbodyM"
   bindtouchend="bindTbodyE"
 >
-<view class="table">
+<view class="table{{tableMode === 'stretch' ? ' stretch' : ''}}">
   <view class="thead">
     <view class="th" wx:for="{{weekArr}}" wx:key="index">{{item}}</view>
   </view>
@@ -20,13 +20,23 @@
       <view class="td_content{{item.date === selectedDate ? ' active' : ''}}" 
       catchtap="bindDateTap" 
       data-date="{{item.date}}">
+        <icon class="iconfont icon-yundong1" wx:if="{{curMonthTodo[item.date].isExerise}}"></icon>
         <view class="text{{item.date === curDate ? ' td_curdate': ''}}">
           {{item.day}}
         </view>
-        <view class="cal_icon-group">
+        <view class="cal_icon-group" wx:if="{{tableMode === 'shrink'}}">
           <icon class="cal_icon todo_icon iconfont icon-dian" wx:if="{{curMonthTodo[item.date].todoCount}}"></icon>
-          <icon class="cal_icon exer_icon iconfont icon-dian"
-          wx:if="{{curMonthTodo[item.date].isExerise}}"></icon>
+          <!-- <icon class="cal_icon exer_icon iconfont icon-dian"
+          wx:if="{{curMonthTodo[item.date].isExerise}}"></icon> -->
+        </view>
+        <view class="cal_item-group" wx:else>
+          <view class="cal_item" 
+          wx:for="{{curMonthTodo[item.date].listData}}"
+          wx:key="id"
+          style="background-color: {{item.completed ? '#eee' : '#C8A9D3'}}"
+          >
+          {{item.name}}
+        </view>
         </view>
       </view>
     </view>
@@ -39,28 +49,44 @@
   </view>
 </view> 
 <view class="cal_detail-box" wx:if="{{showDetailBox}}">
-  <view class="cal_detail">
-    <icon></icon>
-    <view wx:if="{{curMonthTodo[selectedDate].todoCount}}">
-      <text wx:if="{{!selectedDate || (selectedDate == curDate)}}">今日待办</text>
-      <text wx:else>当日待办</text>
-      <text>{{curMonthTodo[selectedDate].todoCount}}项</text>
+  <view class="icon xiala-icon"><icon class="iconfont icon-xiala"></icon></view>
+  <view class="cal_detail" wx:if="{{curMonthTodo[selectedDate].todoCount}}">
+    <view class="detail-icon">
+      <icon class="iconfont icon-daiban"></icon>
     </view>
-    <view wx:else>
-      <text wx:if="{{!selectedDate || (selectedDate == curDate)}}">今日无待办</text>
-      <text wx:else>当日无待办</text>
+    <view class="detail-name" wx:if="{{!selectedDate || (selectedDate == curDate)}}">今日待办</view>
+    <view class="detail-name" wx:else>当日待办</view>
+    <view class="detail-value">
+      {{curMonthTodo[selectedDate].todoCount}}项
     </view>
-    <navigator url="/pages/todos/todos"
+    <navigator class="detail-nav" url="/pages/todos/todos"
+    bindtap="bindDetailTap"
+    >详情</navigator>
+    </view>
+  <view class="cal_detail" wx:else>
+    <view class="detail-icon">
+      <icon class="iconfont icon-daiban"></icon>
+    </view>
+      <view class="detail-name" wx:if="{{!selectedDate || (selectedDate == curDate)}}">今日无待办</view>
+      <view class="detail-name" wx:else>当日无待办
+      </view>
+      <navigator class="detail-nav" url="/pages/todos/todos"
     bindtap="bindDetailTap"
     >详情</navigator>
   </view>
   <view class="cal_detail">
-    <icon></icon>
-    <text>运动打卡</text>
+    <view class="detail-icon">
+      <icon class="iconfont icon-yundong1"></icon>
+    </view>
+    <view class="detail-name">运动打卡</view>
     <switch
-    class="cal_detail-switch"
-    checked
+    class="cal_detail-switch detail-value"
+    checked="{{curMonthTodo[selectedDate].isExerise}}"
+    bindchange="bindSwithChange"
     color="#66cccc"/>
   </view>
+</view>
+<view class="icon shangla-icon">
+  <icon class="iconfont icon-shangla{{tableMode === 'stretch' ? ' stretch' : ''}}"></icon>
 </view>
 </view>

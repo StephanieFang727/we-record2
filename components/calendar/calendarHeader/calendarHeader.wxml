@@ -1,10 +1,16 @@
 <!--components/calendar/calendarHeader.wxml-->
 <view class="cal_header">
-  <view class="cal_left_arrow" bindtap="bindMonthChange" data-type="back">《</view>
   <picker class="cal_title" mode="date" fields="month" value="{{month}}" start="1900-01" end="2100-01" bindchange="bindMonthSelect">
     <view class="picker">
     {{month}}
     </view>
   </picker>
-  <view class="cal_left_arrow" bindtap="bindMonthChange" data-type="forward">》</view>
+  <view class="cal_header-fanye">
+     <view class="fanye-icon" bindtap="bindMonthChange" data-type="forward">
+      <icon class="iconfont icon-xiangxiafanye icon"></icon>
+    </view>
+    <view class="fanye-icon" bindtap="bindMonthChange" data-type="back">
+      <icon class="iconfont icon-xiangshangfanye icon"></icon>
+    </view>
+  </view>
 </view>
