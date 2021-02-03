@@ -4,7 +4,7 @@
   height: 60rpx;
   justify-content: space-between;
   /* margin-bottom: 48rpx; */
-  margin: 0 24rpx 48rpx 24rpx;
+  margin: 30rpx 24rpx 48rpx 24rpx;
 }
 .cal_header .cal_title {
   width: 50%;

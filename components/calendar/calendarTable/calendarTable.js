@@ -1,6 +1,8 @@
 // components/calendar/calendarTable.js
 import create from '../../../utils/create'
 import {
+  formatDate2,
+  transformDate,
   formatDateToMonth,
   getMonthArr,
   getFirstday,
@@ -32,6 +34,7 @@ create.Component({
   use:[
     'month',
     'curDate',
+    'calendarData',
     'updateFlag'
   ],
   /**
@@ -84,7 +87,7 @@ create.Component({
     }
   },
   observers: {
-    'month': function(month) {
+    'month': async function(month) {
       console.log(month);
       //
      // TODO 持久化 不用每次都计算
@@ -92,16 +95,28 @@ create.Component({
       // 如果不是本月，光圈聚焦在当月第一天
       if(month !== formatDateToMonth(new Date())){
         this.setData({
-          selectedDate: `${month}-01`
+          selectedDate: `${transformDate(month)}/01`
         })
       }else {
         this.setData({
-          selectedDate: formatDate(new Date())
+          selectedDate: formatDate2(new Date())
         })
       }
+      console.log(this.data.selectedDate);
+      console.log('calchange1')
       // 拉取对应月份的事件
-      this.getTodoInCurMonth()
+      await this.getTodoInCurMonth()
     },
+    // 'calendarData': function(){
+    //   // if(this.data._count === 1){
+    //   //   this.setData({
+    //   //     _count: 0
+    //   //   })
+    //   //   return;
+    //   // }
+    //   console.log('calchange')
+    //   this.getTodoInCurMonth();
+    // }
     'updateFlag': async function(updateFlag){
       // todo数据有更新时刷新日历数据，第一次不用刷新
       if(this.data._count === 1){
@@ -110,8 +125,8 @@ create.Component({
         })
         return;
       }
-      console.log(updateFlag)
-      await this.getTodoInCurMonth(true);
+      console.log('updateFlag')
+      await this.getTodoInCurMonth();
     },
   },
   /**
@@ -226,33 +241,33 @@ create.Component({
     // 获取对应月份事件相应方法
     getAllCalendarTodo: async function() {
       // 不用每次都拉取日历事件数据
-      let {calendarData} = this.data;
+      let {calendarData} = this.store.data;
       if(calendarData){
         return calendarData;
       }
       calendarData = await this.getAllCalendarData();
-      this.setData({
-        calendarData
-      })
+      this.store.data.calendarData = calendarData;
       console.log(calendarData);
       return calendarData;
     },
     getTodoInCurMonth: async function(force=false){
       // 不用每次都拉一遍所有数据
       let calendarData = {};
-      if(force){ //强制拉取
-        calendarData = await this.forceUpdatetAllCalendarTodo();
-      }else{
-        calendarData = await this.getAllCalendarTodo();
-      }    
+      // if(force){ //强制拉取
+      //   calendarData = await this.forceUpdatetAllCalendarTodo();
+      // }else{
+      //   calendarData = await this.getAllCalendarTodo();
+      // } 
+      calendarData = await this.getAllCalendarTodo();
+      console.log(calendarData);
       let curMonthTodo = {};
       for (let date in calendarData){
-        if(date.slice(0,7) === this.store.data.month){
+        if(date.slice(0,7) === transformDate(this.store.data.month)){
           // console.log(calendarData[day]);
           /**
            * curMonthTodo 形如：{
-           * "2021-01-11"：{listData: [], todoCount: 2, isExerise: false},
-           * "2021-01-20"：{todoCount: 3, isExerise: false}, 
+           * "2021/01/11"：{listData: [], todoCount: 2, isExerise: false},
+           * "2021/01/20"：{todoCount: 3, isExerise: false}, 
            * }
            * 
            */

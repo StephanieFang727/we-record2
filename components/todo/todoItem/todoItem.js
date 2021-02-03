@@ -21,7 +21,6 @@ Component({
   },
   lifetimes: {
     attached(){
-     console.log(this);
       const {windowWidth} = wxp.getSystemInfoSync();
       this.setData({
         todoContentWidth: windowWidth-16,

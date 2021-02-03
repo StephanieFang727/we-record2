@@ -11,6 +11,19 @@ const formatDate = date => {
   // return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
   return [year, month, day].join('-');
 }
+// 格式为xxxx/xx/xx
+const formatDate2 = date => {
+  const year = date.getFullYear()
+  let month = date.getMonth() + 1
+  let day = date.getDate()
+  month = month > 9 ? month : '0' + month;
+  day = day > 9 ? day : '0' + day;
+  return [year, month, day].join('/');
+}
+// 从xxxx-xx-xx 到 xxxx/xx/xx
+const transformDate = date => {
+  return date.replace(/-/g,'/');
+}
 const formatDateToMonth = (date) => {
  return formatMonth(date.getFullYear(), date.getMonth() + 1)
 }
@@ -51,7 +64,7 @@ const getIndex = ((arr,item)=>{
     return Array.from(new Array(count),(value,i) => {
       i ++;
       i = i > 9 ? i : '0'+ i;
-      return {date: `${year}-${month > 9 ? month : '0' + month }-${i}`,day: parseInt(i)}});
+      return {date: `${year}/${month > 9 ? month : '0' + month }/${i}`,day: parseInt(i)}});
   };
   // 3.获得某年某月的 1号 是星期几
   const getFirstday = (year, month) => {
@@ -79,6 +92,8 @@ const getIndex = ((arr,item)=>{
  */
 module.exports = {
   formatDate,
+  formatDate2,
+  transformDate,
   formatMonth,
   formatDateToMonth,
   getIndex,

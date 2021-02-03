@@ -1,4 +1,6 @@
 {
-  "navigationBarTitleText": "我",
-  "usingComponents": {}
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "test-store": "/components/test-store/test-store"
+  }
 }

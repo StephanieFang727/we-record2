@@ -1,7 +1,7 @@
 // components/todo/todoList/todoList.js
 import create from '../../../utils/create'
 import {wxp}  from '../../../utils/api';
-import {getIndex} from '../../../utils/util'
+import {getIndex, transformDate} from '../../../utils/util'
 const calTodoBehavior = require('../../calTodo-behavior')
 
 create.Component({
@@ -9,6 +9,7 @@ create.Component({
   use:[
     "date",
     "updateFlag",
+    "calendarData"
   ],
   // properties: {
   //   // 这里定义了innerText属性，属性值可以在组件使用时指定
@@ -48,28 +49,30 @@ create.Component({
   methods: {
   // 获取todolist源数据
   getListData: async function() {
-    const {date} = this.store.data;
+    let {date} = this.store.data;
+    date = transformDate(date);
     // 不用每次都拉取日历事件数据
-    let calendarData = this.data.calendarData || await this.getAllCalendarData();
+    let calendarData = this.store.data.calendarData || await this.getAllCalendarData();
     if(!calendarData[date]){
       calendarData[date] = {};
      }
-    console.log(calendarData);
     const listData = calendarData[date].listData || [] ;
     const todoCount = calendarData[date].todoCount || 0;
     this.setData({
       listData,
       todoCount,
-      calendarData
     })
     // console.log(calendarData[date]);
+    this.store.data.calendarData = calendarData;
  },
  // 存储todolist数据
  setListData: async function(todoDetail) {
-   const {date} = this.store.data;
-   this.setData({
-    calendarData: await this.setCalendarData(todoDetail, date, this.data.calendarData)
-   })
+   let {date} = this.store.data;
+   date = transformDate(date);
+  //  this.setData({
+  //   calendarData: await this.setCalendarData(todoDetail, date, this.data.calendarData)
+  //  })
+   this.store.data.calendarData = await this.setCalendarData(todoDetail, date, this.store.data.calendarData);
  },
  initCurList: async function () {
    await this.getListData();
@@ -231,7 +234,6 @@ create.Component({
   delTodo: async function(item){
     let {todoCount} = this.data;
     let listData = this.data.listData.filter(v=>v.id!==item.id);
-    console.log(listData,123);
     if(!item.completed){// 如果删除的是未完成的事项 则todoCount也要相应减一
       todoCount --;
     }

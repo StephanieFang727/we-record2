@@ -1,7 +1,7 @@
 // pages/calendar/calendar.js
 import create from '../../utils/create'
 import store from '../../store/index'
-import {formatMonth, formatDate} from  "../../utils/util"
+import {formatMonth, formatDate2} from  "../../utils/util"
 
 
 create.Page(store, {
@@ -27,7 +27,7 @@ create.Page(store, {
     // store.onChange(this.handler),
     console.log("change");
     this.store.data.month = formatMonth(new Date().getFullYear(), new Date().getMonth() + 1); 
-    this.store.data.curDate = formatDate(new Date());
+    this.store.data.curDate = formatDate2(new Date());
   },
 
   /**

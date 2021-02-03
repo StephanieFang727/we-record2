@@ -20,7 +20,7 @@ view {
   flex-flow: column;
   min-height: 100vh;
   /* background-color: #DEF2F1; */
-  padding: 30rpx 0 0 0;
+  padding: 0;
 } 
 .btn {
   background-color: #C077AF !important ;

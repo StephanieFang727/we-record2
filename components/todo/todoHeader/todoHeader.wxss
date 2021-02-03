@@ -5,6 +5,7 @@
   width: 300rpx;
   justify-content: center;
   margin: 0 auto;
+  margin-top: 30rpx;
   margin-bottom: 48rpx;
   font-weight: 1000;
   font-size: large;

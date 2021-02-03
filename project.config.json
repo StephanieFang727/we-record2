@@ -70,6 +70,13 @@
         {
           "name": "pages/calendar/calendar",
           "pathName": "pages/calendar/calendar",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/userInfo/userInfo",
+          "pathName": "pages/userInfo/userInfo",
+          "query": "",
           "scene": null
         }
       ]
