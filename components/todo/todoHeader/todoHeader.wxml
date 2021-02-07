@@ -1,8 +1,8 @@
 <!--components/todo/todoHeader.wxml-->
 <view class="todo_header">
-  <picker mode="date" value="{{date}}" start="1900-01-01" end="2100-01-01" bindchange="bindDateChange">
+  <picker mode="date" value="{{selectedDate}}" start="1900-01-01" end="2100-01-01" bindchange="bindDateChange">
     <view class="picker">
-    {{date}}
+    {{selectedDate}}
     </view>
   </picker>
 </view>

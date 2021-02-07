@@ -25,7 +25,6 @@ create.Page(store, {
    */
   onLoad: function (options) {
     // store.onChange(this.handler),
-    console.log("change");
     this.store.data.month = formatMonth(new Date().getFullYear(), new Date().getMonth() + 1); 
     this.store.data.curDate = formatDate2(new Date());
   },

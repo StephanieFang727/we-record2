@@ -4,7 +4,7 @@ import {formatDate} from '../../../utils/util';
 
 create.Component({
   use:[
-    "date",
+    "selectedDate",
   ],
   /**
    * 组件的属性列表
@@ -23,8 +23,12 @@ create.Component({
 
   // },
   lifetimes: {
+    attached(){
+     
+    },
     ready(){
-      
+      // this.store.data.selectedDate = new Date();
+      //console.log(new Date());
     }
   },
   /**
@@ -33,7 +37,7 @@ create.Component({
   methods: {
     bindDateChange: function(e) {
       // this.triggerEvent('dateChange',{value: e.detail.value})
-      this.store.data.date = e.detail.value;
+      this.store.data.selectedDate = e.detail.value;
     },
   }
 })

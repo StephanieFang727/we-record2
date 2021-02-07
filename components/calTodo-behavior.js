@@ -5,7 +5,7 @@ module.exports = Behavior({
   
   },
   data: {
-   
+   pData:'',
   },
   lifetimes: {
     attached: function() {
@@ -42,6 +42,23 @@ module.exports = Behavior({
       console.log(e)
     }
     return temp;
+  },
+  getPersonalData: async function(){
+    let obj ={}; 
+    try {
+      obj = await getStorageData('pData');
+    } catch(e) {
+      console.log(e);
+    }
+    console.log(obj);
+    return obj;
+  },
+  setPersonalData: async function(obj){
+    try{
+      await setStorageData('pData',obj);
+    } catch(e) {
+      console.log(e)
+    }
   }
 }
 })

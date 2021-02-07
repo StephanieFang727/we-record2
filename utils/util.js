@@ -24,6 +24,10 @@ const formatDate2 = date => {
 const transformDate = date => {
   return date.replace(/-/g,'/');
 }
+// 从xxxx/xx/xx 到 xxxx-xx-xx
+const transformDate2 = date => {
+  return date.replace(/\//g,'-');
+}
 const formatDateToMonth = (date) => {
  return formatMonth(date.getFullYear(), date.getMonth() + 1)
 }
@@ -53,7 +57,7 @@ const getIndex = ((arr,item)=>{
     return (year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0);
   };
   // 2.获得每个月的日期有多少，注意 month - [0-11]
-  const getMonthArr = (year, month) => {
+  const getMonthCount = (year,month) => {
     let arr = [
       0,
       31, null, 31, 30, 
@@ -61,6 +65,10 @@ const getIndex = ((arr,item)=>{
       30, 31, 30, 31
     ];
     let count = arr[month] || (isLeapYear(year) ? 29 : 28);
+    return count;
+  }
+  const getMonthArr = (year, month) => {
+    const count = getMonthCount(year, month);
     return Array.from(new Array(count),(value,i) => {
       i ++;
       i = i > 9 ? i : '0'+ i;
@@ -90,10 +98,21 @@ const getIndex = ((arr,item)=>{
 /**
  * 日历相关方法end
  */
+/**
+ * 计算两个日期之间的间隔 
+ * date: xxxx/xx/xx
+ */
+const caldDateInterval = (date1, date2) => {
+  const [d1, d2] = [date1, date2].map( date => new Date(transformDate2(date)));
+  return Math.floor(Math.abs(d1 - d2) / (1000 * 60 * 60 * 24));
+}
+
 module.exports = {
   formatDate,
   formatDate2,
   transformDate,
+  transformDate2,
+  getMonthCount,
   formatMonth,
   formatDateToMonth,
   getIndex,
@@ -102,4 +121,5 @@ module.exports = {
   getFirstday,
   getPreMonthArr,
   getNextMonthArr,
+  caldDateInterval
 }

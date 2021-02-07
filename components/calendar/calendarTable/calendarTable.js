@@ -7,7 +7,9 @@ import {
   getMonthArr,
   getFirstday,
   getPreMonthArr,
-  getNextMonthArr, formatDate
+  getNextMonthArr, 
+  formatDate,
+  caldDateInterval,
 } from "../../../utils/util"
 import {wxp, getRpx}  from '../../../utils/api';
 
@@ -266,8 +268,8 @@ create.Component({
           // console.log(calendarData[day]);
           /**
            * curMonthTodo 形如：{
-           * "2021/01/11"：{listData: [], todoCount: 2, isExerise: false},
-           * "2021/01/20"：{todoCount: 3, isExerise: false}, 
+           * "2021/01/11"：{listData: [], todoCount: 2, isExercise: false},
+           * "2021/01/20"：{todoCount: 3, isExercise: false}, 
            * }
            * 
            */
@@ -275,7 +277,8 @@ create.Component({
             listData:  calendarData[date].listData ? 
             calendarData[date].listData.slice(0,this.data.itemNum) : [],
             todoCount: calendarData[date].todoCount || 0,
-            isExerise: calendarData[date].isExerise || false,
+            isExercise: calendarData[date].isExercise || false,
+            isTOM: calendarData[date].isTOM || false,
           }
         }
       }
@@ -291,14 +294,41 @@ create.Component({
       })
     },
     bindDetailTap: function(e){
-     this.store.data.date = this.data.selectedDate;
+     this.store.data.selectedDate = this.data.selectedDate.replace(/\//g,'-');
       wx.switchTab({
         url: '/pages/todos/todos',
       })
     },
-    bindSwithChange: async function(e){
+    bindExerciseChange: async function(e){
+      const {selectedDate} = this.data;
+      const pData = await this.getPersonalData();
+      let lastExerDate = pData.lastExerDate || '';
+      if (lastExerDate < selectedDate){
+        pData.lastExerDate = selectedDate;
+        await this.setPersonalData(pData);
+      }
       await this.setCalendarData(
-        {isExerise: e.detail.value},
+        {isExercise: e.detail.value},
+        selectedDate,
+        this.data.calendarData
+      );
+      this.store.data.updateFlag = !this.store.data.updateFlag;
+    },
+    bindTOMChange: async function(e) {
+      const {selectedDate} = this.data;
+      // TODO
+      // const pData = await this.getPersonalData();
+      // let lastTOMDate = pData.lastTOMDate || '';
+      // let duration = pData.duration || 0;
+      // if (caldDateInterval(lastTOMDate, selectedDate) > 1){
+      //   duration = 1;
+      // }else{
+      //   duration ++;
+      // }
+      // pData.lastTOMDate = 
+      // await this.setPersonalData('lastTOMDate', selectedDate);
+      await this.setCalendarData(
+        {isTOM: e.detail.value},
         this.data.selectedDate,
         this.data.calendarData
       );

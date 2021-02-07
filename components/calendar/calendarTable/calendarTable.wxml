@@ -20,14 +20,15 @@
       <view class="td_content{{item.date === selectedDate ? ' active' : ''}}" 
       catchtap="bindDateTap" 
       data-date="{{item.date}}">
-        <icon class="iconfont icon-yundong1" wx:if="{{curMonthTodo[item.date].isExerise}}"></icon>
+        <icon class="iconfont icon-yundong1" wx:if="{{curMonthTodo[item.date].isExercise}}"></icon>
+        <icon class="iconfont icon-yuejing2" wx:if="{{curMonthTodo[item.date].isTOM}}"></icon>
         <view class="text{{item.date === curDate ? ' td_curdate': ''}}">
           {{item.day}}
         </view>
         <view class="cal_icon-group" wx:if="{{tableMode === 'shrink'}}">
           <icon class="cal_icon todo_icon iconfont icon-dian" wx:if="{{curMonthTodo[item.date].todoCount}}"></icon>
           <!-- <icon class="cal_icon exer_icon iconfont icon-dian"
-          wx:if="{{curMonthTodo[item.date].isExerise}}"></icon> -->
+          wx:if="{{curMonthTodo[item.date].isExercise}}"></icon> -->
         </view>
         <view class="cal_item-group" wx:else>
           <view class="cal_item" 
@@ -74,16 +75,27 @@
     bindtap="bindDetailTap"
     >详情</navigator>
   </view>
-  <view class="cal_detail">
+  <view class="cal_detail" wx:if="{{selectedDate <= curDate}}">
     <view class="detail-icon">
       <icon class="iconfont icon-yundong1"></icon>
     </view>
     <view class="detail-name">运动打卡</view>
     <switch
     class="cal_detail-switch detail-value"
-    checked="{{curMonthTodo[selectedDate].isExerise}}"
-    bindchange="bindSwithChange"
+    checked="{{curMonthTodo[selectedDate].isExercise}}"
+    bindchange="bindExerciseChange"
     color="#66cccc"/>
+  </view>
+  <view class="cal_detail" wx:if="{{selectedDate <= curDate}}">
+    <view class="detail-icon">
+      <icon class="iconfont icon-dayima"></icon>
+    </view>
+    <view class="detail-name">姨妈打卡</view>
+    <switch
+    class="cal_detail-switch detail-value"
+    checked="{{curMonthTodo[selectedDate].isTOM}}"
+    bindchange="bindTOMChange"
+    color="#F3607D"/>
   </view>
 </view>
 <view class="icon shangla-icon">

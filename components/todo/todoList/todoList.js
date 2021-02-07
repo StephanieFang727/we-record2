@@ -7,7 +7,7 @@ const calTodoBehavior = require('../../calTodo-behavior')
 create.Component({
   behaviors:[calTodoBehavior],
   use:[
-    "date",
+    "selectedDate",
     "updateFlag",
     "calendarData"
   ],
@@ -31,7 +31,7 @@ create.Component({
     formType: 'add',
   },
   observers: {
-    'date': async function() {
+    'selectedDate': async function() {
       await this.initCurList();
     }
   },
@@ -49,30 +49,30 @@ create.Component({
   methods: {
   // 获取todolist源数据
   getListData: async function() {
-    let {date} = this.store.data;
-    date = transformDate(date);
+    let {selectedDate} = this.store.data;
+    selectedDate = transformDate(selectedDate);
     // 不用每次都拉取日历事件数据
     let calendarData = this.store.data.calendarData || await this.getAllCalendarData();
-    if(!calendarData[date]){
-      calendarData[date] = {};
+    if(!calendarData[selectedDate]){
+      calendarData[selectedDate] = {};
      }
-    const listData = calendarData[date].listData || [] ;
-    const todoCount = calendarData[date].todoCount || 0;
+    const listData = calendarData[selectedDate].listData || [] ;
+    const todoCount = calendarData[selectedDate].todoCount || 0;
     this.setData({
       listData,
       todoCount,
     })
-    // console.log(calendarData[date]);
+    // console.log(calendarData[selectedDate]);
     this.store.data.calendarData = calendarData;
  },
  // 存储todolist数据
  setListData: async function(todoDetail) {
-   let {date} = this.store.data;
-   date = transformDate(date);
+   let {selectedDate} = this.store.data;
+   selectedDate = transformDate(selectedDate);
   //  this.setData({
   //   calendarData: await this.setCalendarData(todoDetail, date, this.data.calendarData)
   //  })
-   this.store.data.calendarData = await this.setCalendarData(todoDetail, date, this.store.data.calendarData);
+   this.store.data.calendarData = await this.setCalendarData(todoDetail, selectedDate, this.store.data.calendarData);
  },
  initCurList: async function () {
    await this.getListData();

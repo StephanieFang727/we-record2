@@ -1,26 +1,27 @@
 /**index.wxss**/
 .user_header .userinfo-box {
+  position: relative;
   width: 100%;
   height: 30vh;
   background-color: #eee;
 }
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.userinfo-box .userinfo-button{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-
+.userinfo-box .userinfo {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
 .userinfo-avatar {
   width: 128rpx;
   height: 128rpx;
   margin: 20rpx;
   border-radius: 50%;
 }
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
 .usermotto {
   margin-top: 200px;
 }

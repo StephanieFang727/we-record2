@@ -75,8 +75,15 @@
   color: #66cccc;
   font-size: 16px;
   position: absolute;
-  right: 0;
-  top: -10rpx;
+  right: -10rpx;
+  top: -20rpx;
+}
+.td_content .icon-yuejing2 {
+  color: #F3607D;
+  font-size: 16px;
+  position: absolute;
+  right: -10rpx;
+  top: 30rpx;
 }
 .td_content.active {
   border: 2rpx solid #C077AF;
@@ -84,6 +91,7 @@
 .td_content .td_curdate {
   color: #C077AF
 }
+
 .td .cal_icon-group {
   position: absolute;
   left: 0;
@@ -117,7 +125,6 @@
   line-height: 27rpx;
   font-size: 8pt;
   margin-top: 1rpx;
-  background-color: yellow;
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
@@ -158,6 +165,9 @@
 }
 .detail-icon .icon-yundong1{
   color: #66cccc;
+}
+.detail-icon .icon-dayima{
+  color: #F3607D;
 }
 .icon {
   position: absolute;
